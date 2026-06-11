@@ -38,11 +38,13 @@ function DutyCalculator() {
 
     try {
       const response = await fetch(
-        `https://ai-import-export-intelligence-system.onrender.com/calculate-duty?country=${country}&hsn_code=${hsnCode}&value=${value}`,
-        {
-          method: "POST",
-        }
-      );
+  `https://ai-import-export-intelligence-system.onrender.com/duty?country=${country}&hsn_code=${hsnCode}&value=${value}`,
+  {
+    method: "POST",
+  }
+);
+console.log(data);
+alert(JSON.stringify(data));
 
       const data = await response.json();
 
