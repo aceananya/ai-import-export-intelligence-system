@@ -22,9 +22,10 @@ function HSNClassification() {
     const data = await response.json();
 
 console.log(data);
-alert(JSON.stringify(data));
+console.log(data);
 
 setResult(data);
+console.log("Result state:", data);
   } catch (error) {
     console.error(error);
     alert("Classification Failed");
