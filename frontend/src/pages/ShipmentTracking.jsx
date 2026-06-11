@@ -11,6 +11,7 @@ import {
   TileLayer,
   Marker,
   Popup,
+  Polyline,
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -24,6 +25,22 @@ function ShipmentTracking() {
     useState("");
 
   const [shipment, setShipment] = useState(null);
+  const routes = {
+  TRK1001: {
+    origin: [19.0760, 72.8777],
+    destination: [40.7128, -74.0060],
+  },
+
+  TRK1002: {
+    origin: [31.2304, 121.4737],
+    destination: [19.0760, 72.8777],
+  },
+
+  TRK1003: {
+    origin: [19.0760, 72.8777],
+    destination: [25.2048, 55.2708],
+  },
+};
 
   const fetchShipment = async () => {
     if (!trackingNumber) {
@@ -49,6 +66,9 @@ function ShipmentTracking() {
       alert("Failed to fetch shipment");
     }
   };
+  const route =
+  shipment &&
+  routes[shipment.tracking_number];
 
   return (
     <div className="p-8">
@@ -109,16 +129,17 @@ function ShipmentTracking() {
                 shipment.latitude,
                 shipment.longitude,
               ]}
-              zoom={6}
+              zoom={3}
               style={{
                 height: "400px",
                 width: "100%",
               }}
             >
 
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+             <TileLayer
+  url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+  attribution="© OpenStreetMap © CARTO"
+/>
 
               <Marker
                 position={[
@@ -132,6 +153,30 @@ function ShipmentTracking() {
                 </Popup>
 
               </Marker>
+              {route && (
+  <>
+    <Marker position={route.origin}>
+      <Popup>
+        Origin
+      </Popup>
+    </Marker>
+
+    <Marker position={route.destination}>
+      <Popup>
+        Destination
+      </Popup>
+    </Marker>
+
+    <Polyline
+      positions={[
+        route.origin,
+        route.destination,
+      ]}
+      color="blue"
+      weight={5}
+    />
+  </>
+)}
 
             </MapContainer>
 
