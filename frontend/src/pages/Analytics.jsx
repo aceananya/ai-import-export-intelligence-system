@@ -22,7 +22,7 @@ function Analytics() {
   const fetchAnalytics = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/analytics"
+        "https://ai-import-export-intelligence-system.onrender.com/analytics"
       );
 
       const data = await response.json();

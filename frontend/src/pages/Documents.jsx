@@ -17,7 +17,7 @@ function Documents() {
 const fetchDocuments = async () => {
   try {
     const response = await fetch(
-      "http://127.0.0.1:8000/documents"
+      "https://ai-import-export-intelligence-system.onrender.com/documents"
     );
 
     const data = await response.json();
@@ -89,7 +89,7 @@ const deleteDocument = (id) => {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/documents",
+        "https://ai-import-export-intelligence-system.onrender.com/documents",
         {
           method: "POST",
           body: formData,

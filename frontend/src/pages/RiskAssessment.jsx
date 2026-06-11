@@ -26,7 +26,7 @@ if (
 try {
 
   const response = await fetch(
-    `http://127.0.0.1:8000/risk?client_name=${clientName}&country=${country}&late_payments=${latePayments}&shipment_delays=${shipmentDelays}&compliance_issues=${complianceIssues}`,
+    `https://ai-import-export-intelligence-system.onrender.com/risk?client_name=${clientName}&country=${country}&late_payments=${latePayments}&shipment_delays=${shipmentDelays}&compliance_issues=${complianceIssues}`,
     {
       method: "POST",
     }

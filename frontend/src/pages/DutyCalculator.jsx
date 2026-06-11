@@ -15,7 +15,7 @@ function DutyCalculator() {
   const fetchCountries = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/countries"
+        "https://ai-import-export-intelligence-system.onrender.com/countries"
       );
 
       const data = await response.json();
@@ -38,7 +38,7 @@ function DutyCalculator() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/duty?country=${country}&hsn_code=${hsnCode}&value=${value}`,
+        `https://ai-import-export-intelligence-system.onrender.com/calculate-duty?country=${country}&hsn_code=${hsnCode}&value=${value}`,
         {
           method: "POST",
         }

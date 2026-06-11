@@ -13,7 +13,7 @@ function HSNClassification() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/hsn?product=${product}`,
+        `https://ai-import-export-intelligence-system.onrender.com/classify?product=${product}`,
         {
           method: "POST",
         }

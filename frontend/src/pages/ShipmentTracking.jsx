@@ -50,7 +50,7 @@ function ShipmentTracking() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/shipment/${trackingNumber}`
+        `https://ai-import-export-intelligence-system.onrender.com/track?tracking_number=${trackingNumber}`,
       );
 
       const data = await response.json();
