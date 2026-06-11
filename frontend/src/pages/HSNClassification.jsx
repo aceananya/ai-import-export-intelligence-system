@@ -6,27 +6,29 @@ function HSNClassification() {
   const [result, setResult] = useState(null);
 
   const classifyProduct = async () => {
-    if (!product) {
-      alert("Please enter a product name");
-      return;
-    }
+  if (!product) {
+    alert("Please enter a product name");
+    return;
+  }
 
-    try {
-      const response = await fetch(
-        `https://ai-import-export-intelligence-system.onrender.com/classify?product=${product}`,
-        {
-          method: "POST",
-        }
-      );
+  try {
+    const response = await fetch(
+      `https://ai-import-export-intelligence-system.onrender.com/hsn?product=${product}`,
+      {
+        method: "POST",
+      }
+    );
 
-      const data = await response.json();
+    const data = await response.json();
 
-      setResult(data);
-    } catch (error) {
-      console.error(error);
-      alert("Classification Failed");
-    }
-  };
+    console.log(data);
+
+    setResult(data);
+  } catch (error) {
+    console.error(error);
+    alert("Classification Failed");
+  }
+};
 
   return (
     <div className="p-10">
