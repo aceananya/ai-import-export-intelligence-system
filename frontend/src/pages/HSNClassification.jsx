@@ -22,7 +22,7 @@ function HSNClassification() {
     const data = await response.json();
 
 console.log(data);
-console.log(data);
+
 
 setResult(data);
 console.log("Result state:", data);
@@ -36,9 +36,9 @@ console.log("Result state:", data);
     <div className="p-10">
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">
-          HSN Classification
-        </h1>
+        <h1 className="text-3xl font-bold text-red-500">
+  HSN Classification TEST123
+</h1>
 
         <p className="text-gray-500 mt-2">
           Find and classify products using HSN codes.
