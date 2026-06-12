@@ -14,9 +14,13 @@ function DutyCalculator() {
 
   const fetchCountries = async () => {
     try {
-      const response = await fetch(
-        "https://ai-import-export-intelligence-system.onrender.com/countries"
-      );
+      console.log("Fetching countries...");
+
+const response = await fetch(
+  "https://ai-import-export-intelligence-system.onrender.com/countries"
+);
+
+console.log(response);
 
       const data = await response.json();
 
