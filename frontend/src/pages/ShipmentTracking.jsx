@@ -61,7 +61,33 @@ function ShipmentTracking() {
         return;
       }
 
-      setShipment(data);
+      console.log(data);
+
+setShipment({
+  tracking_number:
+    data.tracking_number ||
+    data.trackingNumber,
+
+  origin_country:
+    data.origin_country ||
+    data.originCountry,
+
+  destination_country:
+    data.destination_country ||
+    data.destinationCountry,
+
+  current_location:
+    data.current_location ||
+    data.currentLocation,
+
+  status: data.status,
+
+  progress: data.progress,
+
+  latitude: data.latitude,
+
+  longitude: data.longitude,
+});
     } catch (error) {
       console.error(error);
       alert("Failed to fetch shipment");
@@ -69,7 +95,7 @@ function ShipmentTracking() {
   };
   const route =
   shipment &&
-  routes[shipment.tracking_number];
+  routes[shipment.tracking_number?.trim()];
 
   return (
     <div className="p-8">
