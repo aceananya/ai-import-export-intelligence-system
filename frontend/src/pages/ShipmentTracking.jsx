@@ -54,6 +54,7 @@ function ShipmentTracking() {
       );
 
       const data = await response.json();
+      console.log(data);
 
       if (data.error) {
         alert(data.error);
@@ -125,10 +126,10 @@ function ShipmentTracking() {
             </h2>
 
             <MapContainer
-              center={[
-                shipment.latitude,
-                shipment.longitude,
-              ]}
+  center={[
+    Number(shipment.latitude || 0),
+    Number(shipment.longitude || 0),
+  ]}
               zoom={3}
               style={{
                 height: "400px",
@@ -142,11 +143,12 @@ function ShipmentTracking() {
 />
 
               <Marker
-                position={[
-                  shipment.latitude,
-                  shipment.longitude,
-                ]}
-              >
+  position={[
+    Number(shipment.latitude || 0),
+    Number(shipment.longitude || 0),
+  ]}
+>
+              
 
                 <Popup>
                   {shipment.current_location}
