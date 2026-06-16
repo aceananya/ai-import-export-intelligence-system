@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 
+import LandingPage from "./pages/LandingPage";
+import ContactPage from "./pages/ContactPage";
+
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Documents from "./pages/Documents";
@@ -19,12 +22,18 @@ function App() {
     <BrowserRouter>
       <Routes>
 
+        {/* Landing Page */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Contact Page */}
+        <Route path="/contact" element={<ContactPage />} />
+
         {/* Login */}
         <Route path="/login" element={<Login />} />
 
         {/* Dashboard */}
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <DashboardLayout>
               <Dashboard />

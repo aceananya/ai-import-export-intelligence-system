@@ -123,6 +123,16 @@ function Login() {
           123456
         </div>
 
+        <div className="text-center mt-4 text-sm text-gray-500">
+          Don't have an account?{" "}
+          <button
+            onClick={() => navigate("/signup")}
+            className="text-blue-700 font-semibold hover:underline"
+          >
+            Create a new account
+          </button>
+        </div>
+
       </div>
     </div>
   );

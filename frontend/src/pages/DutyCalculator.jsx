@@ -41,18 +41,23 @@ console.log(response);
     }
 
     try {
-      const response = await fetch(
+     const response = await fetch(
   `https://ai-import-export-intelligence-system.onrender.com/duty?country=${country}&hsn_code=${hsnCode}&value=${value}`,
   {
     method: "POST",
   }
 );
+
+const data = await response.json();
+
 console.log(data);
-alert(JSON.stringify(data));
 
-      const data = await response.json();
+if (data.error) {
+  alert(data.error);
+  return;
+}
 
-      setResult(data);
+setResult(data);
     } catch (error) {
       console.error(error);
       alert("Calculation Failed");
