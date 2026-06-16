@@ -9,6 +9,7 @@ function Clients() {
       email: "abc@gmail.com",
       phone: "+1 987654321",
       status: "Active",
+      risk: 95,
     },
     {
       id: 2,
@@ -17,6 +18,7 @@ function Clients() {
       email: "global@gmail.com",
       phone: "+971 123456789",
       status: "Active",
+      risk: 45,
     },
   ]);
 
@@ -26,7 +28,7 @@ function Clients() {
   const [country, setCountry] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-
+  const [risk, setRisk] = useState(30);
   const addClient = () => {
     if (
       !name ||
@@ -45,6 +47,7 @@ function Clients() {
       email,
       phone,
       status: "Active",
+      risk: Math.floor(Math.random() * 100) 
     };
 
     setClients([...clients, newClient]);
@@ -53,6 +56,7 @@ function Clients() {
     setCountry("");
     setEmail("");
     setPhone("");
+    setRisk(30);
 
     setShowForm(false);
   };
@@ -230,6 +234,9 @@ function Clients() {
               <th className="text-left py-3">
                 Actions
               </th>
+              <th className="text-left py-3">
+                Risk Score
+              </th>
 
             </tr>
           </thead>
@@ -264,6 +271,9 @@ function Clients() {
                     {client.status}
                   </span>
                 </td>
+                <td>
+                  {client.risk}%
+                </td>
 
                 <td>
 
@@ -277,6 +287,8 @@ function Clients() {
                   </button>
 
                 </td>
+
+                
 
               </tr>
 
