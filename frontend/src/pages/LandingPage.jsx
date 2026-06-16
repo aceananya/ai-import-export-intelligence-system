@@ -315,7 +315,7 @@ export default function LandingPage() {
               Automate documentation, classify products, calculate duties, track shipments and get real-time insights — all in one AI-powered platform.
             </p>
             <div style={{ display: "flex", gap: 14, marginTop: 32 }}>
-              <button className="btn-primary" onClick={() => navigate("/login")}>Explore Platform →</button>
+              <button className="btn-primary" onClick={() => navigate("/login")}>Get Started →</button>
               <button className="btn-outline" onClick={() => scrollTo("features")}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
                 See How It Works
