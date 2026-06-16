@@ -224,16 +224,19 @@ function Clients() {
               </th>
 
               <th className="text-left py-3">
-  Status
-</th>
+                Phone
+              </th>
 
-<th className="text-left py-3">
-  Risk Score
-</th>
+              <th className="text-left py-3">
+                Status
+              </th>
 
-<th className="text-left py-3">
-  Actions
-</th>
+              <th className="text-left py-3">
+                Risk Score
+              </th>
+              <th className="text-left py-3">
+                Action
+             </th>
 
             </tr>
           </thead>
