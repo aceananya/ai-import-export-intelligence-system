@@ -14,7 +14,7 @@ function Login() {
       password === "123456"
     ) {
       localStorage.setItem("isLoggedIn", "true");
-      navigate("/");
+      navigate("/dashboard");
     } else {
       alert("Invalid Email or Password");
     }
