@@ -53,3 +53,20 @@
   cursor: pointer;
   color: #f87171;
 }
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 220px;
+    z-index: 1000;
+  }
+
+  .logo-section h2 {
+    font-size: 20px;
+  }
+
+  .menu-item {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+}

@@ -5,7 +5,7 @@ function DashboardLayout({ children }) {
     <div className="flex">
       <Sidebar />
 
-      <main className="ml-[270px] min-h-screen w-full bg-slate-100">
+      <main className="w-full md:ml-[270px] min-h-screen bg-slate-100">
         {children}
       </main>
     </div>

@@ -22,7 +22,7 @@ import "./Sidebar.css";
 const menuItems = [
   {
     name: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: <FiHome />,
   },
   {
