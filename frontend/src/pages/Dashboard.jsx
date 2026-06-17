@@ -101,12 +101,8 @@ function Dashboard() {
   className="relative"
   aria-label="Notifications"
 >
-            <FiBell className="text-2xl text-slate-600" />
-
-            <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-              3
-            </span>
-          </button>
+  <FiBell className="text-2xl text-slate-600" />
+</button>
 
           <div className="flex items-center gap-3">
             <div>
