@@ -57,7 +57,7 @@ function Dashboard() {
   ];
 
   return (
-    <div className="p-4 md:p-10">
+    <div className="p-4 pt-20 md:p-10 md:pt-10">
 
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6 mb-12">
