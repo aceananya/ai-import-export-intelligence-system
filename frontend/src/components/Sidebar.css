@@ -60,9 +60,17 @@
 @media (max-width: 768px) {
 
   .hamburger-btn {
-  width: 40px;
-  height: 40px;
+  display: block;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1100;
+  background: white;
+  border: none;
   font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
 }
   .sidebar {
     transform: translateX(-100%);
