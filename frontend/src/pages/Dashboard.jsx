@@ -76,20 +76,31 @@ function Dashboard() {
 
           <div className="flex gap-2">
 
-            <input
-              type="text"
-              placeholder="Search shipments, clients..."
-              className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-72 bg-white"
-            />
+            <label htmlFor="search" className="sr-only">
+  Search
+</label>
 
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
+<input
+  id="search"
+  type="text"
+  placeholder="Search shipments, clients..."
+  className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-72 bg-white"
+/>
+
+            <button
+  aria-label="Search"
+  className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+>
               <FiSearch />
               Search
             </button>
 
           </div>
 
-          <button className="relative">
+          <button
+  className="relative"
+  aria-label="Notifications"
+>
             <FiBell className="text-2xl text-slate-600" />
 
             <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
@@ -154,9 +165,16 @@ function Dashboard() {
               Shipment Overview
             </h2>
 
-            <select className="border rounded-lg px-3 py-1">
-              <option>This Month</option>
-            </select>
+            <label htmlFor="timeFilter" className="sr-only">
+  Select Time Period
+</label>
+
+<select
+  id="timeFilter"
+  className="border rounded-lg px-3 py-1"
+>
+  <option>This Month</option>
+</select>
           </div>
 
           <div className="h-80">
