@@ -57,10 +57,10 @@ function Dashboard() {
   ];
 
   return (
-    <div className="p-10">
+    <div className="p-4 md:p-10">
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-12">
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6 mb-12">
 
         <div>
           <h1 className="text-3xl font-bold text-slate-800">
@@ -72,14 +72,14 @@ function Dashboard() {
           </p>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
 
           <div className="flex gap-2">
 
             <input
               type="text"
               placeholder="Search shipments, clients..."
-              className="border border-gray-300 rounded-lg px-4 py-2 w-72 bg-white"
+              className="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-72 bg-white"
             />
 
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
@@ -118,7 +118,7 @@ function Dashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-4 gap-10 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-12">
         {cards.map((card) => (
           <div
             key={card.title}
@@ -146,9 +146,9 @@ function Dashboard() {
       </div>
 
       {/* Chart + Activity */}
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
 
-        <div className="col-span-2 bg-white rounded-2xl p-8 shadow-sm">
+        <div className="xl:col-span-2 bg-white rounded-2xl p-6 md:p-8 shadow-sm">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold">
               Shipment Overview
@@ -235,6 +235,7 @@ function Dashboard() {
           </button>
         </div>
 
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b">
@@ -280,11 +281,12 @@ function Dashboard() {
             </tr>
           </tbody>
         </table>
+        </div>
 
       </div>
 
       {/* Bottom Cards */}
-      <div className="grid grid-cols-2 gap-8 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
 
         <div className="bg-white rounded-2xl p-6 shadow-sm">
           <h2 className="text-xl font-semibold mb-6">
