@@ -9,7 +9,11 @@ import {
   FiBarChart2,
   FiSettings,
   FiLogOut,
+  FiMenu,
+  FiX,
 } from "react-icons/fi";
+
+import { useState } from "react";
 
 import {
   Link,
@@ -75,6 +79,7 @@ const menuItems = [
 function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
@@ -82,7 +87,15 @@ function Sidebar() {
   };
 
   return (
-    <aside className="sidebar">
+  <>
+    <button
+      className="hamburger-btn"
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      {isOpen ? <FiX /> : <FiMenu />}
+    </button>
+
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
 
       {/* Logo */}
 
@@ -122,7 +135,8 @@ function Sidebar() {
         <span>Logout</span>
       </button>
 
-    </aside>
+        </aside>
+  </>
   );
 }
 
