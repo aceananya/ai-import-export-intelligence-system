@@ -1,67 +1,130 @@
+
 import { useState, useEffect } from "react";
+
+const LOCAL_URL = "http://127.0.0.1:8000";
+const RENDER_URL =
+  "https://ai-import-export-intelligence-system.onrender.com";
 
 function DutyCalculator() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("");
   const [hsnCode, setHsnCode] = useState("");
   const [value, setValue] = useState("");
-
   const [result, setResult] = useState(null);
+  const [loadingCountries, setLoadingCountries] = useState(false);
+  const [calculating, setCalculating] = useState(false);
+
+  // Try the local backend first, then Render.
+  const fetchWithFallback = async (path, options = {}) => {
+    try {
+      const response = await fetch(`${LOCAL_URL}${path}`, options);
+
+      if (!response.ok) {
+        throw new Error(`Local backend returned ${response.status}`);
+      }
+
+      return response;
+    } catch (localError) {
+      console.warn(
+        "Local backend unavailable. Trying Render.",
+        localError
+      );
+
+      const response = await fetch(`${RENDER_URL}${path}`, options);
+
+      if (!response.ok) {
+        throw new Error(`Render backend returned ${response.status}`);
+      }
+
+      return response;
+    }
+  };
+
+  // Fetch available countries.
+  const fetchCountries = async () => {
+    setLoadingCountries(true);
+
+    try {
+      const response = await fetchWithFallback("/countries");
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Unexpected countries response from backend.");
+      }
+
+      setCountries(data);
+
+      if (data.length > 0) {
+        setCountry((currentCountry) => currentCountry || data[0]);
+      } else {
+        setCountry("");
+      }
+    } catch (error) {
+      console.error("Failed to fetch countries:", error);
+      alert("Could not load countries. Please check the backend.");
+    } finally {
+      setLoadingCountries(false);
+    }
+  };
 
   useEffect(() => {
     fetchCountries();
   }, []);
 
-  const fetchCountries = async () => {
-    try {
-      console.log("Fetching countries...");
-
-const response = await fetch(
-  "https://ai-import-export-intelligence-system.onrender.com/countries"
-);
-
-console.log(response);
-
-      const data = await response.json();
-
-      setCountries(data);
-
-      if (data.length > 0) {
-        setCountry(data[0]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+  // Calculate customs duty.
   const calculateDuty = async () => {
-    if (!country || !value || !hsnCode) {
-      alert("Please fill all fields");
+    if (!country || !value.trim() || !hsnCode.trim()) {
+      alert("Please fill all fields.");
       return;
     }
 
-    try {
-     const response = await fetch(
-  `https://ai-import-export-intelligence-system.onrender.com/duty?country=${country}&hsn_code=${hsnCode}&value=${value}`,
-  {
-    method: "POST",
-  }
-);
+    const numericValue = Number(value);
 
-const data = await response.json();
-
-console.log(data);
-
-if (data.error) {
-  alert(data.error);
-  return;
-}
-
-setResult(data);
-    } catch (error) {
-      console.error(error);
-      alert("Calculation Failed");
+    if (!Number.isFinite(numericValue) || numericValue <= 0) {
+      alert("Please enter a valid product value greater than zero.");
+      return;
     }
+
+    setCalculating(true);
+    setResult(null);
+
+    try {
+      const params = new URLSearchParams({
+        country,
+        hsn_code: hsnCode.trim(),
+        value: String(numericValue),
+      });
+
+      const response = await fetchWithFallback(
+        `/duty?${params.toString()}`,
+        { method: "POST" }
+      );
+
+      const data = await response.json();
+
+      console.log("Duty calculation response:", data);
+
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+
+      setResult(data);
+    } catch (error) {
+      console.error("Duty calculation failed:", error);
+      alert(`Calculation failed: ${error.message}`);
+    } finally {
+      setCalculating(false);
+    }
+  };
+
+  // Format amounts safely.
+  const formatAmount = (amount) => {
+    const numericAmount = Number(amount);
+
+    return Number.isFinite(numericAmount)
+      ? `$${numericAmount.toFixed(2)}`
+      : "N/A";
   };
 
   return (
@@ -75,16 +138,14 @@ setResult(data);
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
         {/* Left Panel */}
         <div className="bg-white rounded-2xl shadow-sm p-8">
-
           <h2 className="text-xl font-semibold mb-6">
             Parameters
           </h2>
 
           <div className="space-y-5">
-
+            {/* Destination Country */}
             <div>
               <label className="block text-sm text-gray-500 mb-2">
                 Destination Country
@@ -93,16 +154,36 @@ setResult(data);
               <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
+                disabled={loadingCountries || countries.length === 0}
                 className="w-full border rounded-lg p-3"
               >
+                {countries.length === 0 && (
+                  <option value="">
+                    {loadingCountries
+                      ? "Loading countries..."
+                      : "No countries available"}
+                  </option>
+                )}
+
                 {countries.map((c, index) => (
-                  <option key={index}>
+                  <option key={`${c}-${index}`} value={c}>
                     {c}
                   </option>
                 ))}
               </select>
+
+              {!loadingCountries && countries.length === 0 && (
+                <button
+                  type="button"
+                  onClick={fetchCountries}
+                  className="text-blue-600 text-sm mt-2"
+                >
+                  Retry loading countries
+                </button>
+              )}
             </div>
 
+            {/* HSN Code */}
             <div>
               <label className="block text-sm text-gray-500 mb-2">
                 HSN Code
@@ -117,6 +198,7 @@ setResult(data);
               />
             </div>
 
+            {/* Product Value */}
             <div>
               <label className="block text-sm text-gray-500 mb-2">
                 Product Value
@@ -124,10 +206,10 @@ setResult(data);
 
               <input
                 type="number"
+                min="0"
+                step="any"
                 value={value}
-                onChange={(e) =>
-                  setValue(e.target.value)
-                }
+                onChange={(e) => setValue(e.target.value)}
                 placeholder="Enter Product Value"
                 className="w-full border rounded-lg p-3"
               />
@@ -135,92 +217,80 @@ setResult(data);
 
             <button
               onClick={calculateDuty}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+              disabled={calculating || !country || countries.length === 0}
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Calculate Duty
+              {calculating ? "Calculating..." : "Calculate Duty"}
             </button>
-
           </div>
-
         </div>
 
         {/* Right Panel */}
         <div className="bg-white rounded-2xl shadow-sm p-8">
-
           <h2 className="text-xl font-semibold mb-6">
             Duty Result
           </h2>
 
           {result ? (
             <div className="space-y-4">
-
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>Country</span>
-                <span className="font-semibold">
-                  {result.country}
+                <span className="font-semibold text-right">
+                  {result.country ?? country}
                 </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>HSN Code</span>
-                <span className="font-semibold">
-                  {result.hsn_code}
+                <span className="font-semibold text-right">
+                  {result.hsn_code ?? hsnCode}
                 </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>Product</span>
-                <span className="font-semibold">
-                  {result.product_name}
+                <span className="font-semibold text-right">
+                  {result.product_name ?? "N/A"}
                 </span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>Product Value</span>
-                <span>
-                  ${result.product_value}
-                </span>
+                <span>{formatAmount(result.product_value)}</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>Customs Duty</span>
-                <span>
-                  ${result.customs_duty?.toFixed(2)}
-                </span>
+                <span>{formatAmount(result.customs_duty)}</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>VAT / GST</span>
-                <span>
-                  ${result.vat?.toFixed(2)}
-                </span>
+                <span>{formatAmount(result.vat)}</span>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <span>Surcharge</span>
-                <span>
-                  ${result.surcharge?.toFixed(2)}
-                </span>
+                <span>{formatAmount(result.surcharge)}</span>
               </div>
 
               <hr />
 
-              <div className="flex justify-between text-2xl font-bold text-blue-600">
+              <div className="flex justify-between gap-4 text-2xl font-bold text-blue-600">
                 <span>Total Duty</span>
                 <span>
-                  ${result.total_duty?.toFixed(2)}
+                  {formatAmount(result.total_duty)}
                 </span>
               </div>
-
             </div>
           ) : (
             <p className="text-gray-500">
-              Calculate duty to view results.
+              {calculating
+                ? "Calculating customs duty..."
+                : "Calculate duty to view results."}
             </p>
           )}
-
         </div>
-
       </div>
     </div>
   );

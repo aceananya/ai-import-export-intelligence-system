@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 
+import { useState, useEffect } from "react";
 import {
   FiUpload,
   FiFileText,
@@ -7,76 +7,101 @@ import {
   FiEye,
   FiEdit,
   FiTrash2,
-  FiX,
+  FiTag,
 } from "react-icons/fi";
+
+const LOCAL_URL = "http://127.0.0.1:8000";
+const RENDER_URL =
+  "https://ai-import-export-intelligence-system.onrender.com";
 
 function Documents() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [documents, setDocuments] = useState([]);
 
-const fetchDocuments = async () => {
-  try {
-    const response = await fetch(
-      "https://ai-import-export-intelligence-system.onrender.com/documents"
-    );
+  // Try localhost first, then Render.
+  const fetchWithFallback = async (path, options = {}) => {
+    try {
+      const response = await fetch(`${LOCAL_URL}${path}`, options);
 
-    const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`Local backend returned ${response.status}`);
+      }
 
-    setDocuments(data);
-  } catch (error) {
-    console.error(error);
-  }
-};
+      return response;
+    } catch (localError) {
+      console.warn(
+        "Local backend unavailable. Trying Render.",
+        localError
+      );
 
-useEffect(() => {
-  fetchDocuments();
-}, []);
+      const response = await fetch(`${RENDER_URL}${path}`, options);
+
+      if (!response.ok) {
+        throw new Error(`Render backend returned ${response.status}`);
+      }
+
+      return response;
+    }
+  };
+
+  // Fetch uploaded documents.
+  const fetchDocuments = async () => {
+    try {
+      const response = await fetchWithFallback("/documents");
+      const data = await response.json();
+
+      setDocuments(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Failed to fetch documents:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  // View document details.
   const viewDocument = (doc) => {
-  alert(
-    `File: ${doc.filename}
+    alert(
+      `File: ${doc.filename}
 Document Type: ${doc.document_type || "Commercial Invoice"}
 Invoice Number: ${doc.invoice_number || "INV-2025-001"}
 Exporter: ${doc.exporter || "ABC Exports Pvt Ltd"}
 Confidence: ${doc.confidence || "98%"}
-Status: ${doc.status}`
-  );
-};
+Status: ${doc.status || "Uploaded"}`
+    );
+  };
 
-const downloadDocument = (doc) => {
-  alert(`Downloading ${doc.filename}`);
-};
+  // Download placeholder.
+  const downloadDocument = (doc) => {
+    alert(`Downloading ${doc.filename}`);
+  };
 
-const editDocument = (doc) => {
-  const newFilename = prompt(
-    "Enter new filename",
-    doc.filename
-  );
+  // Edit filename in the current UI.
+  const editDocument = (doc) => {
+    const newFilename = prompt("Enter new filename", doc.filename);
 
-  if (!newFilename) return;
+    if (!newFilename || !newFilename.trim()) return;
 
-  setDocuments(
-    documents.map((d) =>
-      d.id === doc.id
-        ? { ...d, filename: newFilename }
-        : d
-    )
-  );
-};
-
-const deleteDocument = (id) => {
-  if (
-    window.confirm(
-      "Delete this document?"
-    )
-  ) {
-    setDocuments(
-      documents.filter(
-        (doc) => doc.id !== id
+    setDocuments((currentDocuments) =>
+      currentDocuments.map((d) =>
+        d.id === doc.id
+          ? { ...d, filename: newFilename.trim() }
+          : d
       )
     );
-  }
-};
+  };
 
+  // Delete from the current UI only.
+  const deleteDocument = (id) => {
+    if (window.confirm("Remove this document from the displayed list?")) {
+      setDocuments((currentDocuments) =>
+        currentDocuments.filter((doc) => doc.id !== id)
+      );
+    }
+  };
+
+  // Upload a document.
   const uploadFile = async () => {
     if (!selectedFile) {
       alert("Please select a file first");
@@ -84,44 +109,41 @@ const deleteDocument = (id) => {
     }
 
     const formData = new FormData();
-
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch(
-        "https://ai-import-export-intelligence-system.onrender.com/documents",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetchWithFallback("/documents", {
+        method: "POST",
+        body: formData,
+      });
 
       const data = await response.json();
 
-      console.log(data);
+      console.log("Upload response:", data);
 
-      alert("File Uploaded Successfully");
+      alert("File uploaded successfully!");
 
       setSelectedFile(null);
 
-document.getElementById("fileInput").value = "";
+      const fileInput = document.getElementById("fileInput");
+      if (fileInput) fileInput.value = "";
 
-fetchDocuments();
+      await fetchDocuments();
     } catch (error) {
-      console.error(error);
-      alert("Upload Failed");
+      console.error("Upload failed:", error);
+      alert(`Upload failed: ${error.message}`);
     }
   };
 
   const removeFile = () => {
     setSelectedFile(null);
 
-    document.getElementById("fileInput").value = "";
+    const fileInput = document.getElementById("fileInput");
+    if (fileInput) fileInput.value = "";
   };
 
   return (
     <div className="p-10">
-
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold">
@@ -135,9 +157,7 @@ fetchDocuments();
 
       {/* Upload Section */}
       <div className="bg-white rounded-2xl shadow-sm p-8 mb-8">
-
         <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center">
-
           <FiUpload
             size={40}
             className="mx-auto text-blue-600 mb-4"
@@ -155,8 +175,9 @@ fetchDocuments();
             id="fileInput"
             type="file"
             hidden
+            accept=".pdf,.jpg,.jpeg,.png,.docx"
             onChange={(e) =>
-              setSelectedFile(e.target.files[0])
+              setSelectedFile(e.target.files?.[0] || null)
             }
           />
 
@@ -169,13 +190,11 @@ fetchDocuments();
 
           {selectedFile && (
             <div className="mt-6">
-
               <p className="text-green-600 font-medium">
                 Selected: {selectedFile.name}
               </p>
 
               <div className="flex justify-center gap-4 mt-4">
-
                 <button
                   onClick={uploadFile}
                   className="bg-green-600 text-white px-5 py-2 rounded-lg"
@@ -189,34 +208,27 @@ fetchDocuments();
                 >
                   Remove
                 </button>
-
               </div>
-
             </div>
           )}
 
           <p className="text-sm text-gray-400 mt-4">
             Supported Formats: PDF, JPG, PNG, DOCX
           </p>
-
         </div>
-
       </div>
 
       {/* Extracted Information */}
       <div className="bg-white rounded-2xl shadow-sm p-8 mb-8">
-
         <h2 className="text-xl font-semibold mb-6">
           Extracted Information
         </h2>
 
         <div className="grid grid-cols-2 gap-6">
-
           <div>
             <label className="text-sm text-gray-500">
               Invoice Number
             </label>
-
             <input
               value="INV-2026-001"
               readOnly
@@ -228,7 +240,6 @@ fetchDocuments();
             <label className="text-sm text-gray-500">
               Exporter
             </label>
-
             <input
               value="ABC Exports Pvt Ltd"
               readOnly
@@ -240,7 +251,6 @@ fetchDocuments();
             <label className="text-sm text-gray-500">
               Importer
             </label>
-
             <input
               value="Global Trade LLC"
               readOnly
@@ -252,114 +262,128 @@ fetchDocuments();
             <label className="text-sm text-gray-500">
               Product
             </label>
-
             <input
               value="Electronic Gadgets"
               readOnly
               className="w-full border rounded-lg p-3 mt-2"
             />
           </div>
-
         </div>
-
       </div>
 
       {/* Documents Table */}
       <div className="bg-white rounded-2xl shadow-sm p-8">
-
         <h2 className="text-xl font-semibold mb-6">
           Uploaded Documents
         </h2>
 
-        <table className="w-full">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3">File Name</th>
+                <th className="text-left py-3">Document Type</th>
+                <th className="text-left py-3">Invoice No.</th>
+                <th className="text-left py-3">Exporter</th>
+                <th className="text-left py-3">Confidence</th>
+                <th className="text-left py-3">Status</th>
+                <th className="text-left py-3">Actions</th>
+              </tr>
+            </thead>
 
-          <thead>
-            <tr className="border-b">
-  <th className="text-left py-3">File Name</th>
-  <th className="text-left py-3">Document Type</th>
-  <th className="text-left py-3">Invoice No.</th>
-  <th className="text-left py-3">Exporter</th>
-  <th className="text-left py-3">Confidence</th>
-  <th className="text-left py-3">Status</th>
-  <th className="text-left py-3">Actions</th>
-</tr>
-          </thead>
-
-        
             <tbody>
+              {documents.map((doc, index) => (
+                <tr
+                  key={doc.id ?? doc.filename ?? index}
+                  className="border-b"
+                >
+                  <td className="py-4">
+                    <div className="flex items-center gap-2">
+                      <FiFileText />
+                      {doc.filename}
+                    </div>
+                  </td>
 
-  {documents.map((doc) => (
+                  <td>
+                    {doc.document_type || "Commercial Invoice"}
+                  </td>
 
-    <tr
-      key={doc.id}
-      className="border-b"
-    >
+                  <td>
+                    {doc.invoice_number || "INV-2025-001"}
+                  </td>
 
-      <td className="py-4 flex items-center gap-2">
-        <FiFileText />
-        {doc.filename}
-      </td>
+                  <td>
+                    {doc.exporter || "ABC Exports Pvt Ltd"}
+                  </td>
 
-      <td>
-  {doc.document_type || "Commercial Invoice"}
-</td>
+                  <td>
+                    <span className="text-blue-600 font-medium">
+                      {doc.confidence || "98%"}
+                    </span>
+                  </td>
 
-<td>
-  {doc.invoice_number || "INV-2025-001"}
-</td>
+                  <td>
+                    <span className="text-green-600">
+                      {doc.status || "Uploaded"}
+                    </span>
+                  </td>
 
-<td>
-  {doc.exporter || "ABC Exports Pvt Ltd"}
-</td>
+                  <td>
+                    <div className="flex gap-4">
+                      <button
+                        type="button"
+                        title="View document"
+                        onClick={() => viewDocument(doc)}
+                        className="text-blue-600"
+                      >
+                        <FiEye />
+                      </button>
 
-<td>
-  <span className="text-blue-600 font-medium">
-    {doc.confidence || "98%"}
-  </span>
-</td>
+                      <button
+                        type="button"
+                        title="Download document"
+                        onClick={() => downloadDocument(doc)}
+                        className="text-green-600"
+                      >
+                        <FiDownload />
+                      </button>
 
-<td>
-  <span className="text-green-600">
-    {doc.status}
-  </span>
-</td>
+                      <button
+                        type="button"
+                        title="Edit filename"
+                        onClick={() => editDocument(doc)}
+                        className="text-yellow-500"
+                      >
+                        <FiEdit />
+                      </button>
 
-      <td>
-        <div className="flex gap-4">
+                      <button
+                        type="button"
+                        title="Remove document from list"
+                        onClick={() => deleteDocument(doc.id)}
+                        className="text-red-600"
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
 
-          <FiEye
-  onClick={() => viewDocument(doc)}
-  className="cursor-pointer text-blue-600"
-/>
-
-<FiDownload
-  onClick={() => downloadDocument(doc)}
-  className="cursor-pointer text-green-600"
-/>
-
-<FiEdit
-  onClick={() => editDocument(doc)}
-  className="cursor-pointer text-yellow-500"
-/>
-
-<FiTrash2
-  onClick={() => deleteDocument(doc.id)}
-  className="cursor-pointer text-red-600"
-/>
-
+              {documents.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="py-8 text-center text-gray-500"
+                  >
+                    No documents found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-      </td>
-
-    </tr>
-
-  ))}
-
-</tbody>
-
-        </table>
-
       </div>
-
     </div>
   );
 }

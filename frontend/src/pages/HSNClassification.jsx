@@ -12,20 +12,37 @@ function HSNClassification() {
   }
 
   try {
-    const response = await fetch(
-      `https://ai-import-export-intelligence-system.onrender.com/hsn?product=${product}`,
-      {
-        method: "POST",
-      }
-    );
+    
+const localURL = "http://127.0.0.1:8000";
+const renderURL =
+  "https://ai-import-export-intelligence-system.onrender.com";
 
-    const data = await response.json();
+const makeRequest = async (baseURL) => {
+  const response = await fetch(
+    `${baseURL}/hsn?product=${encodeURIComponent(product.trim())}`,
+    { method: "POST" }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  return response.json();
+};
+
+let data;
+
+try {
+  data = await makeRequest(localURL);
+} catch (localError) {
+  console.warn("Local backend unavailable; trying Render.", localError);
+  data = await makeRequest(renderURL);
+}
 
 console.log(data);
-
-
 setResult(data);
 console.log("Result state:", data);
+
   } catch (error) {
     console.error(error);
     alert("Classification Failed");
