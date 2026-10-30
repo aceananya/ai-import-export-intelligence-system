@@ -1,3 +1,4 @@
+
 import {
   FiHome,
   FiFileText,
@@ -5,7 +6,7 @@ import {
   FiDollarSign,
   FiShield,
   FiTruck,
-  FiUsers,
+  FiShoppingCart,
   FiBarChart2,
   FiSettings,
   FiLogOut,
@@ -55,9 +56,9 @@ const menuItems = [
     icon: <FiTruck />,
   },
   {
-    name: "Clients",
-    path: "/clients",
-    icon: <FiUsers />,
+    name: "Orders",
+    path: "/orders",
+    icon: <FiShoppingCart />,
   },
   {
     name: "Reports & Analytics",
@@ -65,9 +66,9 @@ const menuItems = [
     icon: <FiBarChart2 />,
   },
   {
-    name: "Users & Roles",
-    path: "/users",
-    icon: <FiUsers />,
+    name: "Invoices",
+    path: "/invoices",
+    icon: <FiFileText />,
   },
   {
     name: "Settings",
@@ -87,56 +88,52 @@ function Sidebar() {
   };
 
   return (
-  <>
-    <button
-      className="hamburger-btn"
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      {isOpen ? <FiX /> : <FiMenu />}
-    </button>
-
-    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
-
-      {/* Logo */}
-
-      <div className="logo-section">
-        <h2>SHNOOR</h2>
-        <p>Import Export Intelligence</p>
-      </div>
-
-      {/* Navigation */}
-
-      <nav className="menu">
-
-        {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            to={item.path}
-            className={`menu-item ${
-              location.pathname === item.path
-                ? "active"
-                : ""
-            }`}
-          >
-            <span>{item.icon}</span>
-            <span>{item.name}</span>
-          </Link>
-        ))}
-
-      </nav>
-
-      {/* Logout */}
-
+    <>
       <button
-        onClick={handleLogout}
-        className="logout"
+        className="hamburger-btn"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <FiLogOut />
-        <span>Logout</span>
+        {isOpen ? <FiX /> : <FiMenu />}
       </button>
 
-        </aside>
-  </>
+      <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+
+        {/* Logo */}
+        <div className="logo-section">
+          <h2>SHNOOR</h2>
+          <p>Import Export Intelligence</p>
+        </div>
+
+        {/* Navigation */}
+        <nav className="menu">
+          {menuItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              onClick={() => setIsOpen(false)}
+              className={`menu-item ${
+                location.pathname === item.path
+                  ? "active"
+                  : ""
+              }`}
+            >
+              <span>{item.icon}</span>
+              <span>{item.name}</span>
+            </Link>
+          ))}
+        </nav>
+
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="logout"
+        >
+          <FiLogOut />
+          <span>Logout</span>
+        </button>
+
+      </aside>
+    </>
   );
 }
 

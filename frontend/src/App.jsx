@@ -12,9 +12,9 @@ import HSNClassification from "./pages/HSNClassification";
 import DutyCalculator from "./pages/DutyCalculator";
 import RiskAssessment from "./pages/RiskAssessment";
 import ShipmentTracking from "./pages/ShipmentTracking";
-import Clients from "./pages/Clients";
+import Orders from "./pages/Orders";
 import Analytics from "./pages/Analytics";
-import Users from "./pages/UsersRoles";
+import Invoices from "./pages/Invoices";
 import Settings from "./pages/Settings";
 
 function App() {
@@ -91,12 +91,12 @@ function App() {
           }
         />
 
-        {/* Clients */}
+        {/* Orders */}
         <Route
-          path="/clients"
+          path="/orders"
           element={
             <DashboardLayout>
-              <Clients />
+              <Orders />
             </DashboardLayout>
           }
         />
@@ -111,12 +111,12 @@ function App() {
           }
         />
 
-        {/* Users */}
+        {/* Invoices */}
         <Route
-          path="/users"
+          path="/invoices"
           element={
             <DashboardLayout>
-              <Users />
+              <Invoices />
             </DashboardLayout>
           }
         />

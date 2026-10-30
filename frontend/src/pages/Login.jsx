@@ -1,19 +1,22 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     if (
-      email === "admin@shnoor.com" &&
+      email === "customer@shnoor.com" &&
       password === "123456"
     ) {
       localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userRole", "Customer");
+      localStorage.setItem("userEmail", email);
+
       navigate("/dashboard");
     } else {
       alert("Invalid Email or Password");
@@ -21,8 +24,8 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center">
-      <div className="bg-white w-[420px] rounded-3xl shadow-lg p-8">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+      <div className="bg-white w-[420px] max-w-full rounded-3xl shadow-lg p-8">
 
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-blue-800">
@@ -44,36 +47,6 @@ function Login() {
           </p>
         </div>
 
-        <div className="mb-6">
-          <label className="block font-medium mb-3">
-            Login As
-          </label>
-
-          <div className="bg-slate-100 rounded-xl p-1 flex">
-            <button
-              onClick={() => setRole("Admin")}
-              className={`flex-1 py-2 rounded-lg ${
-                role === "Admin"
-                  ? "bg-blue-700 text-white"
-                  : ""
-              }`}
-            >
-              Admin
-            </button>
-
-            <button
-              onClick={() => setRole("Customer")}
-              className={`flex-1 py-2 rounded-lg ${
-                role === "Customer"
-                  ? "bg-blue-700 text-white"
-                  : ""
-              }`}
-            >
-              Customer
-            </button>
-          </div>
-        </div>
-
         <div className="mb-5">
           <label className="block font-medium mb-2">
             Email Address
@@ -84,7 +57,7 @@ function Login() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border rounded-xl p-4"
+            className="w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -98,12 +71,16 @@ function Login() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border rounded-xl p-4"
+            className="w-full border rounded-xl p-4 outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="text-right mb-6">
-          <button className="text-blue-700 text-sm">
+          <button
+            type="button"
+            onClick={() => alert("Forgot Password feature is not available in this demo.")}
+            className="text-blue-700 text-sm hover:underline"
+          >
             Forgot Password?
           </button>
         </div>
@@ -118,7 +95,7 @@ function Login() {
         <div className="text-center mt-6 text-gray-500 text-sm">
           Demo Login:
           <br />
-          admin@shnoor.com
+          customer@shnoor.com
           <br />
           123456
         </div>
