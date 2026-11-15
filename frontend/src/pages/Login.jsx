@@ -10,7 +10,7 @@ function Login() {
 
   const handleLogin = () => {
     if (
-      email === "customer@shnoor.com" &&
+      email === "customer@TradeNexa.com" &&
       password === "123456"
     ) {
       localStorage.setItem("isLoggedIn", "true");
@@ -29,7 +29,7 @@ function Login() {
 
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-blue-800">
-            SHNOOR
+            TradeNexa
           </h1>
 
           <p className="text-gray-500 mt-2">
@@ -95,7 +95,7 @@ function Login() {
         <div className="text-center mt-6 text-gray-500 text-sm">
           Demo Login:
           <br />
-          customer@shnoor.com
+          customer@TradeNexa.com
           <br />
           123456
         </div>

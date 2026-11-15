@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 
@@ -10,7 +11,6 @@ import Dashboard from "./pages/Dashboard";
 import Documents from "./pages/Documents";
 import HSNClassification from "./pages/HSNClassification";
 import DutyCalculator from "./pages/DutyCalculator";
-import RiskAssessment from "./pages/RiskAssessment";
 import ShipmentTracking from "./pages/ShipmentTracking";
 import Orders from "./pages/Orders";
 import Analytics from "./pages/Analytics";
@@ -71,16 +71,6 @@ function App() {
           }
         />
 
-        {/* Risk Assessment */}
-        <Route
-          path="/risk"
-          element={
-            <DashboardLayout>
-              <RiskAssessment />
-            </DashboardLayout>
-          }
-        />
-
         {/* Shipment Tracking */}
         <Route
           path="/shipments"
@@ -129,6 +119,12 @@ function App() {
               <Settings />
             </DashboardLayout>
           }
+        />
+
+        {/* Fallback route for invalid URLs */}
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
         />
 
       </Routes>

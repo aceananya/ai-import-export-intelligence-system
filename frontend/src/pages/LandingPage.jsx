@@ -30,11 +30,6 @@ const IconShip = ({ size = 28, color = "#2563eb" }) => (
     <path d="M9 20v-5h6v5"/>
   </svg>
 );
-const IconRisk = ({ size = 28, color = "#2563eb" }) => (
-  <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-  </svg>
-);
 const IconAnalytics = ({ size = 28, color = "#2563eb" }) => (
   <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8">
     <line x1="18" y1="20" x2="18" y2="10"/>
@@ -197,42 +192,53 @@ const IconClose = () => (
   </svg>
 );
 
-const ShnoorLogo = ({ size = 32, light = false }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-    <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 40 40">
-      <circle cx="20" cy="20" r="20" fill="#2563eb"/>
-      <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fill="white" fontSize="18" fontWeight="bold" fontFamily="sans-serif">S</text>
+const TradeNexaLogo = ({ size = 32, light = false }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+    <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 40 40" fill="none">
+      <rect width="40" height="40" rx="12" fill="#2563eb" />
+      <path d="M9 12H31M20 12V29" stroke="white" strokeWidth="4" strokeLinecap="round" />
+      <path d="M25 23L31 29M31 23L25 29" stroke="#bfdbfe" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
     <div>
-      <div style={{ fontSize: size * 0.55, fontWeight: 800, color: light ? "#fff" : "#0f172a", letterSpacing: 1, lineHeight: 1 }}>SHNOOR</div>
-      <div style={{ fontSize: size * 0.28, color: light ? "#93c5fd" : "#1d4ed8", letterSpacing: 0.5 }}>INTERNATIONAL LLC</div>
+      <div style={{ fontSize: size * 0.55, fontWeight: 800, color: light ? "#fff" : "#0f172a", letterSpacing: -0.5, lineHeight: 1.1 }}>
+        Trade<span style={{ color: light ? "#93c5fd" : "#2563eb" }}>Nexa</span>
+      </div>
+      <div style={{ fontSize: size * 0.25, color: light ? "#cbd5e1" : "#64748b", letterSpacing: 0.8, marginTop: 3, fontWeight: 600 }}>
+        GLOBAL TRADE INTELLIGENCE
+      </div>
     </div>
   </div>
 );
 
+const IconOrder = ({ size = 28, color = "#2563eb" }) => (
+  <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8">
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M8 5V3h8v2M7 11h10M7 15h6" />
+  </svg>
+);
+
 const features9 = [
-  { icon: <IconDoc />, label: "Document Processing" },
+  { icon: <IconDoc />, label: "Document Management" },
   { icon: <IconHSN />, label: "HSN Classification" },
-  { icon: <IconDuty />, label: "Duty Calculator" },
-  { icon: <IconShip />, label: "Shipment Tracking" },
-  { icon: <IconRisk />, label: "Risk Assessment" },
+  { icon: <IconDuty />, label: "Customs Duty Calculator" },
+  { icon: <IconShip />, label: "Shipment Journey & Tracking" },
+  { icon: <IconOrder />, label: "Order Management" },
+  { icon: <IconInvoice />, label: "Invoices" },
   { icon: <IconAnalytics />, label: "Trade Analytics" },
-  { icon: <IconCompliance />, label: "Compliance Check" },
-  { icon: <IconImport />, label: "Import & Export Management" },
-  { icon: <IconInvoice />, label: "Invoice Validation" },
-  { icon: <IconAI />, label: "AI Powered Recommendations" },
+  { icon: <IconCompliance />, label: "Customs & Documentation" },
+  { icon: <IconAI />, label: "Shipment Insights & Alerts" },
 ];
 
 const whyCards = [
   { icon: <IconRobot color="#1d4ed8" />, bg: "#eff6ff", title: "Smarter Automation", desc: "Automate repetitive tasks, reduce manual effort and minimize errors." },
   { icon: <IconTarget color="#15803d" />, bg: "#f0fdf4", title: "Accurate & Reliable", desc: "AI models trained for trade data to deliver accurate results you can trust." },
-  { icon: <IconEye color="#b45309" />, bg: "#fffbeb", title: "Real-Time Visibility", desc: "Track shipments and get instant insights to make better decisions." },
+  { icon: <IconEye color="#b45309" />, bg: "#fffbeb", title: "Real-Time Visibility", desc: "Follow shipment checkpoints, view expected arrivals, and assess weather-related or operational disruptions when tracking data is available." },
 ];
 
 const testimonials = [
-  { quote: "The platform has reduced our documentation time by 60% and improved accuracy across our operations.", name: "Rohit Verma", role: "Operations Manager", avatar: "RV", avatarBg: "#fde68a" },
-  { quote: "HSN classification is now effortless and duty calculations are extremely accurate. Great product!", name: "Neha Iyer", role: "Export Consultant", avatar: "NI", avatarBg: "#fbcfe8" },
-  { quote: "Real-time shipment tracking and analytics give us complete visibility of our global trade.", name: "Arjun Mehta", role: "Logistics Head", avatar: "AM", avatarBg: "#a7f3d0" },
+  { quote: "View shipment progress, origin and destination, journey checkpoints, and estimated arrival details in one place.", name: "Shipment Visibility", role: "Tracking and journey overview", avatar: "SV", avatarBg: "#dbeafe" },
+  { quote: "Keep customer orders and invoice details organized alongside your international trade operations.", name: "Orders & Invoices", role: "Business workflow management", avatar: "OI", avatarBg: "#e0e7ff" },
+  { quote: "Use document management, HSN classification, customs duty estimates, and analytics to support trade decisions.", name: "Trade Operations", role: "Integrated platform tools", avatar: "TO", avatarBg: "#d1fae5" },
 ];
 
 const sidebarItems = [
@@ -242,18 +248,20 @@ const sidebarItems = [
 ];
 
 const heroFeatures = [
-  { icon: <IconDoc />, label: "Document Intelligence" },
+  { icon: <IconDoc />, label: "Documents" },
   { icon: <IconHSN />, label: "HSN Classification" },
   { icon: <IconDuty />, label: "Duty Calculator" },
   { icon: <IconShip />, label: "Shipment Tracking" },
-  { icon: <IconRisk />, label: "Risk Assessment" },
+  { icon: <IconOrder />, label: "Orders" },
+  { icon: <IconInvoice />, label: "Invoices" },
   { icon: <IconAnalytics />, label: "Trade Analytics" },
+  { icon: <IconAI />, label: "Shipment Intelligence" },
 ];
 
 const ctaStats = [
-  { val: "750+", label: "Happy Customers", icon: <IconUsers /> },
-  { val: "25K+", label: "Documents Processed", icon: <IconFileText /> },
-  { val: "99.5%", label: "Accuracy Rate", icon: <IconCheckCircle /> },
+  { val: "01", label: "Shipment Tracking", icon: <IconShip /> },
+  { val: "02", label: "Order Management", icon: <IconOrder /> },
+  { val: "03", label: "Invoice Management", icon: <IconInvoice /> },
 ];
 
 export default function LandingPage() {
@@ -377,8 +385,8 @@ export default function LandingPage() {
         <nav aria-label="Main navigation" style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", position: "sticky", top: 0, zIndex: 100 }}>
           <div className="nav-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px", height: 70, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
-            <a href="/" aria-label="SHNOOR — go to homepage" style={{ textDecoration: "none" }} onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-              <ShnoorLogo size={34} />
+            <a href="/" aria-label="TradeNexa — go to homepage" style={{ textDecoration: "none" }} onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+              <TradeNexaLogo size={34} />
             </a>
 
             {/* Desktop nav */}
@@ -435,7 +443,7 @@ export default function LandingPage() {
                 <span style={{ color: "#2563eb" }}>Global Future</span>
               </h1>
               <p style={{ marginTop: 20, fontSize: 16, color: "#374151", lineHeight: 1.8, maxWidth: 420 }}>
-                Automate documentation, classify products, calculate duties, track shipments and get real-time insights — all in one AI-powered platform.
+                Manage documents, classify products, estimate customs duties, track shipment journeys, and organize orders and invoices — all in one intelligent trade platform.
               </p>
               <div style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
                 <button className="btn-primary" onClick={() => navigate("/login")}>Get Started →</button>
@@ -477,12 +485,12 @@ export default function LandingPage() {
         </section>
 
         {/* ── Trusted by ── */}
-        <section aria-label="Trusted by businesses worldwide" style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 32px 48px" }}>
+        <section aria-label="Trade workflow capabilities" style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 32px 48px" }}>
           <div className="section-divider">
-            <span style={{ fontSize: 15, fontWeight: 600, color: "#374151" }}>Trusted by Businesses Worldwide</span>
+            <span style={{ fontSize: 15, fontWeight: 600, color: "#374151" }}>Built for Global Trade Workflows</span>
           </div>
-          <ul className="partners-grid" style={{ marginTop: 24, listStyle: "none" }} role="list" aria-label="Partner companies">
-            {["DP WORLD", "MAERSK", "FedEx", "Hapag-Lloyd", "CMA CGM"].map((name, i) => (
+          <ul className="partners-grid" style={{ marginTop: 24, listStyle: "none" }} role="list" aria-label="Trade workflow areas">
+            {["DOCUMENTS", "SHIPMENTS", "ORDERS", "INVOICES", "ANALYTICS"].map((name, i) => (
               <li key={i} className="partner-card" style={{ fontSize: i === 2 ? 18 : 14, color: i === 2 ? "#c2410c" : i === 3 ? "#1e3a5f" : i === 4 ? "#991b1b" : "#1e293b" }}>
                 {name}
               </li>
@@ -508,11 +516,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── Why Choose SHNOOR ── */}
+        {/* ── Why Choose TradeNexa ── */}
         <section aria-labelledby="why-heading" className="section-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 32px" }}>
           <div className="why-grid">
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#1d4ed8", letterSpacing: 1, marginBottom: 10 }}>WHY CHOOSE SHNOOR?</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#1d4ed8", letterSpacing: 1, marginBottom: 10 }}>WHY CHOOSE TRADENEXA?</p>
               <h2 id="why-heading" className="section-title" style={{ fontSize: 36, fontWeight: 800, lineHeight: 1.2, marginBottom: 20, color: "#0f172a" }}>
                 Built for Modern Trade Businesses
               </h2>
@@ -536,10 +544,10 @@ export default function LandingPage() {
         <section id="solutions" aria-labelledby="reviews-heading" className="section-pad" style={{ background: "#f8fafc", padding: "64px 32px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <h2 id="reviews-heading" className="section-title" style={{ fontSize: 36, fontWeight: 800, textAlign: "center", marginBottom: 8, color: "#0f172a" }}>
-              What Our Clients Say
+              How TradeNexa Supports Your Workflow
             </h2>
             <div aria-hidden="true" style={{ width: 48, height: 3, background: "#2563eb", borderRadius: 99, margin: "0 auto 48px" }} />
-            <ul className="testimonials-grid" style={{ listStyle: "none" }} role="list" aria-label="Customer testimonials">
+            <ul className="testimonials-grid" style={{ listStyle: "none" }} role="list" aria-label="Platform capabilities">
               {testimonials.map((t, i) => (
                 <li key={i} className="testimonial-card">
                   <p aria-hidden="true" style={{ fontSize: 36, color: "#2563eb", lineHeight: 1, marginBottom: 12 }}>"</p>
@@ -585,7 +593,7 @@ export default function LandingPage() {
                     <h2 id="cta-heading" className="section-title" style={{ fontSize: 26, fontWeight: 800, marginBottom: 8, color: "#0f172a" }}>
                       Start Your Smart Trade Journey Today
                     </h2>
-                    <p style={{ color: "#374151", fontSize: 15 }}>Join hundreds of businesses using AI to simplify import export operations.</p>
+                    <p style={{ color: "#374151", fontSize: 15 }}>Bring shipment visibility, trade documents, orders and invoices into one workspace.</p>
                   </div>
                 </div>
                 <ul className="cta-stats" style={{ listStyle: "none" }} role="list" aria-label="Platform statistics">
@@ -625,8 +633,8 @@ export default function LandingPage() {
         <div className="footer-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px" }}>
           <div className="footer-grid" style={{ paddingBottom: 40, borderBottom: "1px solid #1e293b" }}>
             <div>
-              <a href="/" aria-label="SHNOOR homepage" style={{ textDecoration: "none", display: "inline-block" }} onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-                <ShnoorLogo size={34} light />
+              <a href="/" aria-label="TradeNexa homepage" style={{ textDecoration: "none", display: "inline-block" }} onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                <TradeNexaLogo size={34} light />
               </a>
               <p style={{ color: "#94a3b8", marginTop: 16, fontSize: 14, lineHeight: 1.8, maxWidth: 280 }}>
                 Empowering global trade with AI-driven solutions for a smarter, faster and compliant tomorrow.
@@ -657,19 +665,19 @@ export default function LandingPage() {
               <h3 style={{ fontWeight: 700, fontSize: 15, marginBottom: 16, color: "#fff" }}>Contact Us</h3>
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
                 <li style={{ display: "flex", alignItems: "center", gap: 8, color: "#94a3b8", fontSize: 14 }}>
-                  <IconMail /><a href="mailto:support@shnoor.com" style={{ color: "#94a3b8", textDecoration: "none" }} className="footer-link">support@shnoor.com</a>
+                  <IconMail /><a href="mailto:support@tradenexa.com" style={{ color: "#94a3b8", textDecoration: "none" }} className="footer-link">support@tradenexa.com</a>
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: 8, color: "#94a3b8", fontSize: 14 }}>
                   <IconPhone /><a href="tel:+919876543210" style={{ color: "#94a3b8", textDecoration: "none" }} className="footer-link">+91 98765 43210</a>
                 </li>
                 <li style={{ display: "flex", alignItems: "center", gap: 8, color: "#94a3b8", fontSize: 14 }}>
-                  <IconMapPin />Mumbai, India
+                  <IconMapPin />Delhi, India
                 </li>
               </ul>
             </address>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 24, flexWrap: "wrap", gap: 12 }}>
-            <p style={{ color: "#64748b", fontSize: 13 }}>© 2026 SHNOOR International LLC. All rights reserved.</p>
+            <p style={{ color: "#64748b", fontSize: 13 }}>© 2026 TradeNexa. All rights reserved.</p>
             <nav aria-label="Legal links">
               <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
                 <button className="footer-link" style={{ fontSize: 13 }}>Privacy Policy</button>

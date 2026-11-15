@@ -4,7 +4,6 @@ import {
   FiFileText,
   FiSearch,
   FiDollarSign,
-  FiShield,
   FiTruck,
   FiShoppingCart,
   FiBarChart2,
@@ -44,11 +43,6 @@ const menuItems = [
     name: "Duty Calculator",
     path: "/duty",
     icon: <FiDollarSign />,
-  },
-  {
-    name: "Risk Assessment",
-    path: "/risk",
-    icon: <FiShield />,
   },
   {
     name: "Shipment Tracking",
@@ -97,10 +91,9 @@ function Sidebar() {
       </button>
 
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
-
         {/* Logo */}
         <div className="logo-section">
-          <h2>SHNOOR</h2>
+          <h2>TradeNexa</h2>
           <p>Import Export Intelligence</p>
         </div>
 
@@ -131,10 +124,10 @@ function Sidebar() {
           <FiLogOut />
           <span>Logout</span>
         </button>
-
       </aside>
     </>
   );
 }
 
 export default Sidebar;
+
